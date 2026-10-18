@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>letter-field · JustLucasDev</title>
+  <meta name="description" content="Generative texture with procedural wind and shockwaves on click." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231a1a19'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='monospace' font-weight='700' font-size='30' fill='%231aadff'%3EL_%3C/text%3E%3C/svg%3E" />
+  <style>
+    :root { color-scheme: dark; }
+    html, body { margin: 0; height: 100%; background: #1a1a19; overflow: hidden; }
+    body { font-family: ui-monospace, "Cascadia Mono", "JetBrains Mono", Menlo, Consolas, monospace; color: #e8e6e3; }
+    #letters-bg {
+      position: fixed;
+      inset: 0;
+      display: block;
+      font-family: ui-monospace, "Cascadia Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+      --letters-ink: #a6a39b;
+      --letters-glow: rgb(26, 173, 255);
+    }
+    #letters-bg[data-mode="blocks"] { --letters-ink: #2b7fd8; }
+    #letters-bg[data-mode="hacker"] { --letters-ink: #2bd87f; --letters-glow: rgb(120, 255, 170); }
+    .panel {
+      position: fixed;
+      left: 24px;
+      bottom: 24px;
+      padding: 16px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(20, 20, 19, 0.72);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      max-width: calc(100% - 48px);
+      box-sizing: border-box;
+    }
+    h1 { margin: 0; font-size: 18px; font-weight: 700; }
+    h1 span { color: #1aadff; }
+    p { margin: 6px 0 12px; font-size: 12.5px; color: #8b9099; }
+    .modes { display: flex; flex-wrap: wrap; gap: 6px; }
+    .modes a {
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #c9ccd1;
+      font-size: 12.5px;
+      text-decoration: none;
+    }
+    .modes a:hover { border-color: #1aadff; color: #fff; }
+    .modes a[aria-current="true"] { background: rgba(26, 173, 255, 0.15); border-color: #1aadff; color: #7fd1ff; }
+    .by { position: fixed; right: 24px; bottom: 24px; font-size: 12px; color: #6c7682; text-decoration: none; }
+    .by:hover { color: #1aadff; }
+    @media (max-width: 560px) { .by { display: none; } }
+  </style>
+</head>
+<body>
+  <canvas id="letters-bg" data-cell="7"></canvas>
+
+  <div class="panel">
+    <h1>letter<span>-</span>field</h1>
+    <p>procedural wind · click anywhere for a shockwave (every 3rd one is special)</p>
+    <nav class="modes" aria-label="Mode">
+      <a href="?">letters</a>
+      <a href="?mode=blocks">blocks</a>
+      <a href="?mode=hacker">hacker</a>
+    </nav>
+  </div>
+  <a class="by" href="https://justlucasdev.github.io" target="_blank" rel="noopener">by JustLucasDev ↗</a>
+
+  <script>
+    // o modo vem da URL (?mode=blocks | hacker) e precisa estar no canvas antes do efeito iniciar
+    const mode = new URLSearchParams(location.search).get('mode') || '';
+    if (mode === 'blocks' || mode === 'hacker') document.getElementById('letters-bg').dataset.mode = mode;
+    document.querySelectorAll('.modes a').forEach((a) => {
+      const m = new URL(a.href).searchParams.get('mode') || '';
+      a.setAttribute('aria-current', String(m === (document.getElementById('letters-bg').dataset.mode || '')));
+    });
+  </script>
+  <script src="letters-effect.js"></script>
+</body>
+</html>
