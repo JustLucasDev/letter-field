@@ -1,4 +1,4 @@
-// Textura de letras da tela inicial do Claude Code, reimplementada em Canvas 2D.
+// letter-field: textura generativa de letras em Canvas 2D.
 //
 // - Uma grade densa de caracteres minúsculos, quase todos invisíveis.
 // - Um "vento" de ruído sopra rajadas na diagonal; só as letras por onde a rajada passa acendem.
